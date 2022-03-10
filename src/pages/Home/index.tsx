@@ -32,6 +32,11 @@ const Home = () => {
         body: userData,
       });
       console.log(data);
+
+      //
+
+      const response = api.post('/user/create', userData)
+      console.log(response)
     } catch (e) {
       console.log(e);
     }

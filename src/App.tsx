@@ -1,15 +1,19 @@
-import React from "react";
 import Global from "./assets/styles/global";
-import Home from "./pages/Home"
+import Home from "./pages/Home";
 
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { UserProvider } from "./contexts/user";
 
 function App() {
   return (
-    <div className="app">
-      <BrowserRouter>
-        <Route path="/" element={<Home />} />
-      </BrowserRouter>
+    <div>
+      <UserProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </BrowserRouter>
+      </UserProvider>
       <Global />
     </div>
   );

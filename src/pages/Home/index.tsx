@@ -1,42 +1,37 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ReactComponent as CircleImage } from "../../assets/images/homeDog.svg";
 
 import * as S from "./styles";
-
 import GoogleLogin from "react-google-login";
 import api from "../../api/api";
 import Filter from "../../components/Filter";
+import UserContext from "../../contexts/user";
+
+const uuid = require("uuid");
 
 const Home = () => {
   const [loginModalIsOpen, setloginModalIsOpen] = useState<boolean>(false);
+  const { setUser, user } = useContext(UserContext);
 
   const handleGooleLogin = async (googleResponse: any) => {
     if (!googleResponse.profileObj) return console.log("missing data");
+    const salt = uuid.v4();
+
+    const response = await fetch(googleResponse.imageurl);
+    const imageBlob = await response.blob();
 
     const userData = new FormData();
-    userData.append("salt", "123");
-    userData.append("givenName", "123");
-    userData.append("familyName", "123");
-    userData.append("email", "123@gmail.com");
-    userData.append("isVeterinarian", "false");
-    userData.append("userPhoto", {
-      uri: googleResponse.profileObj.imageUrl,
-      name: "userPhoto",
-      type: "image/png",
-    } as unknown as string);
+    userData.append("salt", salt);
+    userData.append("givenName", googleResponse.profileObj.givenName);
+    userData.append("familyName", googleResponse.profileObj.familyName);
+    userData.append("email", googleResponse.profileObj.email);
+    userData.append("isVeterinarian", true as unknown as string | Blob);
+    userData.append("userPhoto", imageBlob);
 
     try {
-      const data = await fetch("http://localhost:3000/api/user/create", {
-        method: "post",
-        headers: { },
-        body: userData,
-      });
-      console.log(data);
-
-      //
-
-      const response = api.post('/user/create', userData)
-      console.log(response)
+      const response = await api.post("/user/create", userData);
+      setUser(response.data);
+      setloginModalIsOpen(false);
     } catch (e) {
       console.log(e);
     }
@@ -62,7 +57,7 @@ const Home = () => {
         </S.TextContainer>
       </S.Container>
 
-      {loginModalIsOpen && (
+      {!!loginModalIsOpen && (
         <Filter>
           <S.ModalContainer>
             <GoogleLogin

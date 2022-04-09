@@ -1,57 +1,65 @@
 import styled from "styled-components";
+import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
 
 export const Container = styled.div`
-  padding: 6.2vw;
-
+  width: 100vw;
+  height: 100vh;
   display: flex;
+  flex-direction: row;
 `;
 
-export const TextContainer = styled.div`
+export const Content = styled.div`
+  width: 100vw;
+  padding-top: 100px;
+
   display: flex;
   justify-content: center;
-  flex-direction: column;
-
-  h1 {
-    color: #2b303a;
-    font-size: 120px;
-    text-transform: uppercase;
-  }
+  align-items: flex-start;
 `;
 
-export const AccessContainer = styled.div`
-  width: 612px;
-  padding: 10px;
+export const TableContainer = styled.div`
+  width: 60vw;
 
   display: flex;
+  justify-content: center;
   align-items: center;
+`;
 
-  border-left: 5px solid #f09c79;
+export const STable = styled(Table)`
+  border-spacing: 0;
+`;
 
-  p {
-    font-size: 36px;
-    color: #999797;
-  }
+export const STHead = styled(Thead)`
+  background: #d66d42;
+  color: #fff;
 
-  button {
-    text-decoration: none;
-    color: #f09c79;
-    font-size: 36px;
+  Th {
+    &:first-child {
+      border-top-left-radius: 5px;
+    }
 
-    background: none;
-    border: none;
-
-    transition: all ease-in-out 2s;
-
-    &:hover {
-      text-decoration: underline;
+    &:last-child {
+      border-top-right-radius: 5px;
     }
   }
 `;
 
-export const ModalContainer = styled.div`
-  width: 400px;
-  height: 400px;
+export const STBody = styled(Tbody)`
+  cursor: pointer;
 
-  background-color: #fff;
-  border-radius: 15px;
+  Tr {
+    background-color: rgba(241, 156, 121, 0.3);
+    &:hover {
+      background-color: rgba(241, 156, 121, 0.6);
+    }
+  }
+`;
+
+export const STh = styled(Th)`
+  text-align: left;
+  padding: 0.6rem;
+`;
+
+export const STd = styled(Td)`
+  padding: 5px;
 `;

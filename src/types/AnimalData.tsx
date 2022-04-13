@@ -1,3 +1,4 @@
+import { UserData } from "./UserData";
 import { VeterinarianData } from "./VeterinarianData";
 
 export interface AnimalData {
@@ -11,11 +12,12 @@ export interface AnimalData {
   name: string;
   trackNumber: string;
   userIdUser: number;
-  veterinarianChatFingerprint: string,
-  userVeterinarian: number | null
-  userVeterinarianFk: VeterinarianData | null
+  user: UserData;
+  veterinarianChatFingerprint: string;
+  userVeterinarian: number | null;
+  userVeterinarianFk: VeterinarianData | null;
 }
 
 export interface AnimalDataWithArraykey extends AnimalData {
-  arrayKey: number
+  arrayKey: number;
 }

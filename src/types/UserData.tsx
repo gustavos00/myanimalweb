@@ -13,5 +13,6 @@ export interface UserData {
   isVeterinarian: boolean;
   animalData: Array<AnimalData>
   userAddress: UserAddressData;
+  haveAddress: boolean
 }
 

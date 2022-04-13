@@ -1,13 +1,19 @@
 import { UserData } from "../../types/UserData";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 import * as S from "./styles";
 
 interface SidebarUserElementProps {
   sidebarIsOpen: boolean;
+  setSidebarIsOpen: (e: boolean) => void;
   user: void | UserData;
 }
 
-function SidebarUserElement({ sidebarIsOpen, user }: SidebarUserElementProps) {
+function SidebarUserElement({
+  sidebarIsOpen,
+  setSidebarIsOpen,
+  user,
+}: SidebarUserElementProps) {
   return (
     <S.UserData sidebarIsOpen={sidebarIsOpen}>
       <img
@@ -15,6 +21,15 @@ function SidebarUserElement({ sidebarIsOpen, user }: SidebarUserElementProps) {
         alt="Profile"
       />
       <h1>{user?.givenName}</h1>
+
+      <S.Test>
+        <S.CloseSidebarIcon
+          icon={faClose}
+          color={"#fff"}
+          sidebarIsOpen={sidebarIsOpen}
+          onClick={() => setSidebarIsOpen(false)}
+        />
+      </S.Test>
     </S.UserData>
   );
 }

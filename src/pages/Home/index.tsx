@@ -1,78 +1,98 @@
-import { useState } from "react";
-import { ReactComponent as CircleImage } from "../../assets/images/homeDog.svg";
+import Sidebar from "../../components/Sidebar";
+import Filter from "../../components/Filter";
+import Loading from "../../components/Loading";
+import CreateAddress from "../../components/CreateAddress";
+import StatesContext from "../../contexts/states";
+import UserContext from "../../contexts/user";
+import Table from "../../components/Table";
+
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 import * as S from "./styles";
 
-import GoogleLogin from "react-google-login";
-import api from "../../api/api";
-import Filter from "../../components/Filter";
+import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { formatDate } from "../../utils/date";
 
-const Home = () => {
-  const [loginModalIsOpen, setloginModalIsOpen] = useState<boolean>(false);
+function Home() {
+  const navigate = useNavigate();
 
-  const handleGooleLogin = async (googleResponse: any) => {
-    if (!googleResponse.profileObj) return console.log("missing data");
+  const { isLoading } = useContext(StatesContext);
+  const { user, animals, events } =
+    useContext(UserContext);
 
-    const userData = new FormData();
-    userData.append("salt", "123");
-    userData.append("givenName", "123");
-    userData.append("familyName", "123");
-    userData.append("email", "123@gmail.com");
-    userData.append("isVeterinarian", "false");
-    userData.append("userPhoto", {
-      uri: googleResponse.profileObj.imageUrl,
-      name: "userPhoto",
-      type: "image/png",
-    } as unknown as string);
+  const [haveAddress, setHaveAddress] = useState<boolean>(
+    user?.haveAddress ? user.haveAddress : false
+  );
 
-    try {
-      const data = await fetch("http://localhost:3000/api/user/create", {
-        method: "post",
-        headers: { },
-        body: userData,
-      });
-      console.log(data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const registeredAnimalsTableHeaders = [
+    "Name",
+    "Age",
+    "Breed",
+    "Track Number",
+    "Birthday",
+    "Birthday Month",
+    "Owner Name",
+    "Owner Contact",
+  ];
+  const idkYet = ["Report", "Status", "Type", "Animal Name", "Date"];
 
   return (
     <>
       <S.Container>
-        <CircleImage />
-        <S.TextContainer>
-          <h1>Welcome to</h1>
-          <h1>myAnimal</h1>
+        <Sidebar />
+        <S.Content>
+          <Table
+            title={"Registered Animals"}
+            header={registeredAnimalsTableHeaders}
+          >
+            <>
+              {animals?.map((element, index) => (
+                <S.STr iscolored={index % 2 === 0} key={index}>
+                  <S.STd>{element.name}</S.STd>
+                  <S.STd>{element.age}</S.STd>
+                  <S.STd>{element.breed}</S.STd>
+                  <S.STd>{element.trackNumber}</S.STd>
+                  <S.STd>{element.birthday}</S.STd>
+                  <S.STd>{element.birthday}</S.STd>
+                  <S.STd>
+                    {element.user.givenName} {element.user.familyName}
+                  </S.STd>
+                  <S.STd>{element.user.email}</S.STd>
+                </S.STr>
+              ))}
+            </>
+          </Table>
 
-          <S.AccessContainer>
-            <p>
-              You can access your veterinarian platform{" "}
-              <button onClick={() => setloginModalIsOpen(!loginModalIsOpen)}>
-                here
-              </button>
-              !
-            </p>
-          </S.AccessContainer>
-        </S.TextContainer>
+          <Table title={"Registered Events"} header={idkYet}>
+            <>
+              {events?.map((element, index) => (
+                <S.STr
+                  onClick={() => navigate("/update", { state: element })}
+                  iscolored={index % 2 === 0}
+                  key={index}
+                >
+                  <S.STd>{element.report}</S.STd>
+                  <S.STd>{element.eventsStatus.value}</S.STd>
+                  <S.STd>{element.eventsType.value}</S.STd>
+                  <S.STd>{element.animal.name}</S.STd>
+                  <S.STd>{formatDate(element.createdAt)}</S.STd>
+                </S.STr>
+              ))}
+            </>
+          </Table>
+        </S.Content>
       </S.Container>
 
-      {loginModalIsOpen && (
+      {!haveAddress && (
         <Filter>
-          <S.ModalContainer>
-            <GoogleLogin
-              clientId="684156509987-sjf96dubfbonavha6gcbavl9bos8j4b6.apps.googleusercontent.com"
-              buttonText="Login"
-              onSuccess={handleGooleLogin}
-              onFailure={handleGooleLogin}
-              cookiePolicy={"single_host_origin"}
-            />
-            ,
-          </S.ModalContainer>
+          <CreateAddress setHaveAddress={setHaveAddress} />
         </Filter>
       )}
+
+      {isLoading && <Loading />}
     </>
   );
-};
+}
 
 export default Home;

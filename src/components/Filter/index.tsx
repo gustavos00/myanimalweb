@@ -3,9 +3,10 @@ import * as S from './styles';
 
 interface FilterProps {
   children: ReactNode;
+  aligned?: boolean
 }
 
-function Filter({ children }: FilterProps) {
+function Filter({ children, aligned }: FilterProps) {
   return (
     <S.Container>
       {children}

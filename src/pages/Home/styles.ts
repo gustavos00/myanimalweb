@@ -1,57 +1,37 @@
 import styled from "styled-components";
+import { Tr, Td } from "react-super-responsive-table";
 
 export const Container = styled.div`
-  padding: 6.2vw;
-
+  width: 100vw;
+  height: 100%;
+  padding-bottom: 100px;
+  
   display: flex;
+  flex-direction: row;
 `;
 
-export const TextContainer = styled.div`
+export const Content = styled.div`
+  width: 100vw;
+  padding-top: 100px;
+
   display: flex;
-  justify-content: center;
   flex-direction: column;
-
-  h1 {
-    color: #2b303a;
-    font-size: 120px;
-    text-transform: uppercase;
-  }
-`;
-
-export const AccessContainer = styled.div`
-  width: 612px;
-  padding: 10px;
-
-  display: flex;
+  justify-content: flex-start;
   align-items: center;
-
-  border-left: 5px solid #f09c79;
-
-  p {
-    font-size: 36px;
-    color: #999797;
-  }
-
-  button {
-    text-decoration: none;
-    color: #f09c79;
-    font-size: 36px;
-
-    background: none;
-    border: none;
-
-    transition: all ease-in-out 2s;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 `;
 
-export const ModalContainer = styled.div`
-  width: 400px;
-  height: 400px;
+export const STd = styled(Td)`
+  padding: 5px;
 
-  background-color: #fff;
-  border-radius: 15px;
+  font-size: 14px;
+  font-weight: normal;
+`;
+
+export const STr = styled(Tr)<{ iscolored: boolean }>`
+  padding: 5px;
+
+  font-size: 14px;
+  font-weight: normal;
+
+  background: ${(props) => (props.iscolored ? "rgba(255,255,255,.3)" : "rgba(255,255,255,.1)")};
 `;

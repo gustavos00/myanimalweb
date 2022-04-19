@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const UserData = styled.div<{ sidebarIsOpen: boolean }>`
   height: 100px;
@@ -7,6 +8,8 @@ export const UserData = styled.div<{ sidebarIsOpen: boolean }>`
 
   align-items: center;
   display: flex;
+
+  position: relative;
 
   img {
     width: 50px;
@@ -22,3 +25,18 @@ export const UserData = styled.div<{ sidebarIsOpen: boolean }>`
     color: #fff;
   }
 `;
+
+export const CloseSidebarIcon = styled(FontAwesomeIcon)<{ sidebarIsOpen: boolean }>`
+  width: 30px;
+  height: 15px;
+
+  position: absolute;
+  right: 1rem;
+
+  cursor: pointer;
+
+  display: ${(props) => (props.sidebarIsOpen ? "block" : "none")};
+`;
+
+export const Test = styled.div`
+`

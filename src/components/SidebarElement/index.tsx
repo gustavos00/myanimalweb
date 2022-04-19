@@ -1,7 +1,6 @@
 import * as S from "./styles";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressBook } from "@fortawesome/free-regular-svg-icons";
+import { useNavigate } from "react-router";
 import { faLongArrowAltRight } from "@fortawesome/free-solid-svg-icons";
 
 interface SidebarElementProps {
@@ -11,9 +10,10 @@ interface SidebarElementProps {
   sidebarIsOpen: boolean
 }
 
-function SidebarElement({ text, icon, sidebarIsOpen }: SidebarElementProps) {
+function SidebarElement({ text, icon, sidebarIsOpen, redirect }: SidebarElementProps) {
+  const navigate = useNavigate()
   return (
-    <S.Container sidebarIsOpen={sidebarIsOpen}>
+    <S.Container onClick={() => redirect && navigate(redirect)} sidebarIsOpen={sidebarIsOpen}>
       <S.Icon icon={icon} color={"#fff"} />
       <p>{text}</p>
       <S.RightArrow sidebarIsOpen={sidebarIsOpen} icon={faLongArrowAltRight} color={"#fff"} />

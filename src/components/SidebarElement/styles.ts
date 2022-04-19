@@ -15,6 +15,7 @@ export const Container = styled.div<{ sidebarIsOpen: boolean }>`
   opacity: 0.6;
   transition: all 0.3s ease-in-out;
   position: relative;
+  z-index: 20;
 
   background: #4f4f4f;
 

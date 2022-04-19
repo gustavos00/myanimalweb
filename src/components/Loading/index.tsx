@@ -13,7 +13,7 @@ function Loading() {
   };
   return (
     <Filter>
-      <Lottie options={options} width={300} height={300} />
+      <Lottie options={options} width={100} height={100} />
     </Filter>
   );
 }

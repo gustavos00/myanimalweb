@@ -2,15 +2,19 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Container = styled.div<{ sidebarIsOpen: boolean }>`
-  height: 100vh;
   width: ${(props) => (props.sidebarIsOpen ? "20vw" : "5vh")};
   max-width: ${(props) => (props.sidebarIsOpen ? "270px" : "80px")};
-  min-width: ${(props) => (props.sidebarIsOpen ? "255" : "75px")};
+  min-width: ${(props) => (props.sidebarIsOpen ? "255px" : "75px")};
 
   display: flex;
   flex-direction: column;
 
+  position: fixed;
+  top: 0;
+  bottom: 0;
   background-color: #adadad;
+
+  z-index: 10;
 `;
 
 export const SidebarElements = styled.div`
@@ -37,7 +41,6 @@ export const SettingsSidebarContainer = styled.button<{
   opacity: 0.6;
 
   &:hover {
-
     opacity: 1;
   }
 

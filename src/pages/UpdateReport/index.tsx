@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { EventsData } from "../../types/EventsData";
+import { EventsData, EventsStatus, EventsTypes } from "../../types/EventsData";
 import { generateUrlSearchParams } from "../../utils/URLSearchParams";
 
 import Loading from "../../components/Loading";
@@ -10,9 +10,11 @@ import api from "../../api/api";
 import UserContext from "../../contexts/user";
 import StyledSelect from "../../components/StyledSelect";
 import StyledButton from "../../components/StyledButton";
+import UploadFiles from "../../components/UploadFiles";
+import EventsContext from "../../contexts/events";
 
 import * as S from "./styles";
-import UploadFiles from "../../components/UploadFiles";
+import { AnimalData } from "../../types/AnimalData";
 
 function UpdateReport() {
   const state = useLocation().state as EventsData;
@@ -20,19 +22,31 @@ function UpdateReport() {
 
   const { isLoading } = useContext(StatesContext);
 
-  const { animals, events, setEvents, eventsStatus, eventsTypes } =
-    useContext(UserContext);
+  const { animals } = useContext(UserContext);
+  const { eventsStatus, eventsTypes, events, setEvents } =
+    useContext(EventsContext);
 
-  const [report, setReport] = useState<string>(state.report);
+  const [report, setReport] = useState<string>(
+    !!state.report ? state.report : ""
+  );
+  const [eventType, setEventType] = useState<EventsTypes>(state.eventsType);
+  const [eventStatus, setEventStatus] = useState<EventsStatus>(
+    state.eventsStatus
+  );
+  const [animal, setAnimal] = useState<AnimalData>(state.animal);
+
+  useEffect(() => console.log(eventType), []);
 
   const handleUpdate = async () => {
     try {
       const reportNewData = {
         idEvents: state.idEvents,
         report,
-        eventsStatus,
-        eventsTypes,
+        eventsStatusId: eventStatus.idEventsStatus,
+        eventsTypesId: eventType.idEventsTypes,
+        animalId: animal.idAnimal,
       };
+      console.log(reportNewData);
       const data = generateUrlSearchParams(reportNewData);
       api.post("/veterinarian/updateEvent", data);
 
@@ -68,21 +82,24 @@ function UpdateReport() {
             </div>
             <S.InputsContainer>
               <StyledSelect
-                selectedProperty={state.eventsType.value}
+                handleOnChange={setEventType}
+                selectedProperty={eventType.value}
                 label={"Events Types"}
                 labelHtmlFor={"eventsTypes"}
                 array={eventsTypes ?? []}
                 propertyName={"value"}
               />
               <StyledSelect
-                selectedProperty={state.eventsStatus.value}
+                handleOnChange={setEventStatus}
+                selectedProperty={eventStatus.value}
                 label={"Events Status"}
                 labelHtmlFor={"eventsStatus"}
                 array={eventsStatus ?? []}
                 propertyName={"value"}
               />
               <StyledSelect
-                selectedProperty={state.animal.name}
+                handleOnChange={setAnimal}
+                selectedProperty={animal.name}
                 label={"Selected Animal"}
                 labelHtmlFor={"selectedAnimal"}
                 array={animals ?? []}

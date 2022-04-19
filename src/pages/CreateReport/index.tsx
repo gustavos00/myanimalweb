@@ -1,7 +1,8 @@
-import { useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router";
 import { EventsData, EventsStatus, EventsTypes } from "../../types/EventsData";
 import { generateUrlSearchParams } from "../../utils/URLSearchParams";
+import { AnimalData } from "../../types/AnimalData";
 
 import Loading from "../../components/Loading";
 import Sidebar from "../../components/Sidebar";
@@ -14,52 +15,47 @@ import UploadFiles from "../../components/UploadFiles";
 import EventsContext from "../../contexts/events";
 
 import * as S from "./styles";
-import { AnimalData } from "../../types/AnimalData";
 
-function UpdateReport() {
-  const state = useLocation().state as EventsData;
+function CreateReport() {
   const navigate = useNavigate();
 
-  const { isLoading } = useContext(StatesContext);
+  const { isLoading, setIsLoading } = useContext(StatesContext);
 
   const { animals } = useContext(UserContext);
-  const { eventsStatus, eventsTypes, events, setEvents } =
+  const { events, setEvents, eventsStatus, eventsTypes } =
     useContext(EventsContext);
 
-  const [report, setReport] = useState<string>(
-    !!state.report ? state.report : ""
-  );
-  const [eventType, setEventType] = useState<EventsTypes>(state.eventsType);
-  const [eventStatus, setEventStatus] = useState<EventsStatus>(
-    state.eventsStatus
-  );
-  const [animal, setAnimal] = useState<AnimalData>(state.animal);
+  const [report, setReport] = useState<string>();
+  const [eventType, setEventType] = useState<EventsTypes>(eventsTypes[0]);
+  const [eventStatus, setEventStatus] = useState<EventsStatus>(eventsStatus[0]);
+  const [animal, setAnimal] = useState<AnimalData>(animals[0]);
 
-  useEffect(() => console.log(eventType), []);
-
-  const handleUpdate = async () => {
+  const handleCreate = async () => {
     try {
+      setIsLoading(true)
       const reportNewData = {
-        idEvents: state.idEvents,
-        report,
-        eventsStatusId: eventStatus.idEventsStatus,
-        eventsTypesId: eventType.idEventsTypes,
-        animalId: animal.idAnimal,
+        report: report ?? '',
+        eventsStatusId: eventStatus?.idEventsStatus,
+        eventsTypesId: eventType?.idEventsTypes,
+        animalId: animal?.idAnimal,
       };
-      console.log(reportNewData);
       const data = generateUrlSearchParams(reportNewData);
-      api.post("/veterinarian/updateEvent", data);
-
+      const response = await api.post("/veterinarian/createEvent", data)
+      
       const tempEvents = events;
-      const eventIndexArray = tempEvents.findIndex(
-        (element) => element.idEvents === state.idEvents
-      );
-      tempEvents[eventIndexArray] = { ...state, report }; //to do -> missing types and status;
+      tempEvents.push({
+        ...response.data,
+        eventsStatus: eventStatus,
+        eventsType: eventsTypes,
+        animal
+      } as unknown as EventsData);
+      
       setEvents(tempEvents);
-
+      setIsLoading(false)
       navigate("/");
     } catch (e) {
-      alert("Error 5");
+      setIsLoading(false)
+      alert("Error 6");
     }
   };
 
@@ -74,16 +70,15 @@ function UpdateReport() {
               <label htmlFor="reportText">Report</label>
               <textarea
                 id="reportText"
-                value={report}
                 cols={30}
                 rows={10}
                 onChange={(e) => setReport(e.target.value)}
               />
             </div>
+            {/* Missing date */}
             <S.InputsContainer>
               <StyledSelect
                 handleOnChange={setEventType}
-                selectedProperty={eventType.value}
                 label={"Events Types"}
                 labelHtmlFor={"eventsTypes"}
                 array={eventsTypes ?? []}
@@ -91,7 +86,6 @@ function UpdateReport() {
               />
               <StyledSelect
                 handleOnChange={setEventStatus}
-                selectedProperty={eventStatus.value}
                 label={"Events Status"}
                 labelHtmlFor={"eventsStatus"}
                 array={eventsStatus ?? []}
@@ -99,7 +93,6 @@ function UpdateReport() {
               />
               <StyledSelect
                 handleOnChange={setAnimal}
-                selectedProperty={animal.name}
                 label={"Selected Animal"}
                 labelHtmlFor={"selectedAnimal"}
                 array={animals ?? []}
@@ -109,7 +102,7 @@ function UpdateReport() {
             </S.InputsContainer>
 
             <S.ButtonContainer>
-              <StyledButton handleClick={handleUpdate} text={"Submit"} />
+              <StyledButton handleClick={handleCreate} text={"Submit"} />
             </S.ButtonContainer>
           </S.DataContent>
         </S.Content>
@@ -120,4 +113,4 @@ function UpdateReport() {
   );
 }
 
-export default UpdateReport;
+export default CreateReport;

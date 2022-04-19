@@ -1,6 +1,7 @@
 import * as S from "./styles";
 
 interface StyledSelectProps {
+  handleOnChange: (e: any) => void;
   array: Array<any>;
   propertyName: string;
   labelHtmlFor: string;
@@ -9,6 +10,7 @@ interface StyledSelectProps {
 }
 
 function StyledSelect({
+  handleOnChange,
   array,
   propertyName,
   labelHtmlFor,
@@ -18,14 +20,21 @@ function StyledSelect({
   return (
     <S.InputContainer>
       <label htmlFor={labelHtmlFor}>{label}</label>
-      <select id={labelHtmlFor}>
-        {array?.map((element) => (
-          <option
-            selected={selectedProperty === element[propertyName] ? true : false}
-          >
-            {element[propertyName]}
-          </option>
-        ))}
+      <select
+        id={labelHtmlFor}
+        onChange={(e) =>
+          handleOnChange(
+            array.filter((object) => object[propertyName] === e.target.value)[0]
+          )
+        }
+      >
+        {array?.map((element, index) => {
+          return (
+            <option key={index} defaultValue={element[propertyName]}>
+              {element[propertyName]}
+            </option>
+          );
+        })}
       </select>
     </S.InputContainer>
   );

@@ -31,14 +31,14 @@ function UploadFiles() {
 
   const renderDragMessage = useCallback(() => {
     if (!isDragActive) {
-      return <S.UploadMessage>Arraste documentos aqui...</S.UploadMessage>;
+      return <S.UploadMessage>Drag documents here...</S.UploadMessage>;
     }
 
     if (isDragReject) {
-      return <S.UploadMessage>Tipo de arquivo não suportado</S.UploadMessage>;
+      return <S.UploadMessage>File type not supported</S.UploadMessage>;
     }
 
-    return <S.UploadMessage>Largue os documentos aqui</S.UploadMessage>;
+    return <S.UploadMessage>Drop the documents where</S.UploadMessage>;
   }, [isDragActive, isDragReject]);
 
   return (

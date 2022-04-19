@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
-import { faHome, faDoorOpen } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faDoorOpen, faBuilding, faUpload } from "@fortawesome/free-solid-svg-icons";
 
 import UserContext from "../../contexts/user";
 import SidebarElement from "../SidebarElement";
@@ -21,34 +21,27 @@ function Sidebar() {
   return (
     <S.Container
       sidebarIsOpen={sidebarIsOpen}
-      onClick={() => setSidebarIsOpen(true)}
+      onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
     >
-      <SidebarUserElement
-        setSidebarIsOpen={setSidebarIsOpen}
-        sidebarIsOpen={sidebarIsOpen}
-        user={user}
-      />
+      <SidebarUserElement sidebarIsOpen={sidebarIsOpen} user={user} />
       <S.SidebarElements>
         <SidebarElement
           sidebarIsOpen={sidebarIsOpen}
           icon={faHome}
-          redirect={"/"}
+          redirect={'/'}
           text={"Home"}
         />
         <SidebarElement
           sidebarIsOpen={sidebarIsOpen}
-          icon={faHome}
-          text={"Verificar"}
+          icon={faBuilding}
+          redirect={'/create'}
+          text={"Criar"}
         />
         <SidebarElement
           sidebarIsOpen={sidebarIsOpen}
-          icon={faHome}
-          text={"teste"}
-        />
-        <SidebarElement
-          sidebarIsOpen={sidebarIsOpen}
-          icon={faHome}
-          text={"teste"}
+          icon={faUpload}
+          redirect={'/update'}
+          text={"Update"}
         />
       </S.SidebarElements>
       <S.SettingsSidebarContainer

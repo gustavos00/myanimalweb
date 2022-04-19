@@ -22,7 +22,7 @@ export interface EventsStatus {
 }
 
 export interface EventsTypes {
-  idEventsType: number;
+  idEventsTypes: number;
   label: string;
   value: string;
   createdAt: string;

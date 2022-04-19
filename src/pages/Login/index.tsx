@@ -8,13 +8,15 @@ import UserContext from "../../contexts/user";
 import api from "../../api/api";
 import Loading from "../../components/Loading";
 import { generateFormData } from "../../utils/FormData";
+import EventsContext from "../../contexts/events";
 
 const uuid = require("uuid");
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>();
-  const { setUser, setEvents, setAnimals, setEventsStatus, setEventsTypes } =
-    useContext(UserContext);
+  const { setUser, setAnimals, setUnacceptedOwners} = useContext(UserContext);
+  const { setEventsStatus, setEventsTypes, setEvents } =
+    useContext(EventsContext);
   const navigate = useNavigate();
 
   const handleGooleLogin = async (googleResponse: any) => {
@@ -39,7 +41,7 @@ const Login = () => {
 
       setUser({
         ...createUserResponse.data,
-        haveAddress: createUserResponse.data.address.idAddress !== null,
+        haveAddress: !(createUserResponse.data.address === undefined || createUserResponse.data.address.idUser === null),
       });
 
       const getEventsPropsResponse = await api.get(
@@ -51,18 +53,24 @@ const Login = () => {
       const getAnimalsResponse = await api.get(
         `veterinarian/getAnimals?id=${createUserResponse.data.idUser}`
       );
-
       setAnimals(getAnimalsResponse.data);
 
       const getEventsResponse = await api.get(
         `veterinarian/getEvents?id=${createUserResponse.data.idUser}`
       );
+      setEvents(getEventsResponse.data);
+
+      const getNotAcceptedOwners = await api.get(
+        `veterinarian/getNotAcceptedOwners?id=${createUserResponse.data.idUser}`
+      );
+      setUnacceptedOwners(getNotAcceptedOwners.data);
 
       setIsLoading(false);
-      setEvents(getEventsResponse.data);
       navigate("/");
     } catch (e) {
+      console.log(e);
       setIsLoading(false);
+
       alert("2");
     }
   };

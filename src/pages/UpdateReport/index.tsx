@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { EventsData, EventsStatus, EventsTypes } from "../../types/EventsData";
 import { generateUrlSearchParams } from "../../utils/URLSearchParams";
@@ -34,8 +34,6 @@ function UpdateReport() {
     state.eventsStatus
   );
   const [animal, setAnimal] = useState<AnimalData>(state.animal);
-
-  useEffect(() => console.log(eventType), []);
 
   const handleUpdate = async () => {
     try {

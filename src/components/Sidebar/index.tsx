@@ -12,7 +12,7 @@ function Sidebar() {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+  const [sidebarisopen, setsidebarisopen] = useState(false);
 
   const handleLogout = () => {
     navigate("/login");
@@ -20,32 +20,32 @@ function Sidebar() {
 
   return (
     <S.Container
-      sidebarIsOpen={sidebarIsOpen}
-      onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
+      sidebarisopen={sidebarisopen}
+      onClick={() => setsidebarisopen(!sidebarisopen)}
     >
-      <SidebarUserElement sidebarIsOpen={sidebarIsOpen} user={user} />
+      <SidebarUserElement sidebarisopen={sidebarisopen} user={user} />
       <S.SidebarElements>
         <SidebarElement
-          sidebarIsOpen={sidebarIsOpen}
+          sidebarisopen={sidebarisopen}
           icon={faHome}
           redirect={'/'}
           text={"Home"}
         />
         <SidebarElement
-          sidebarIsOpen={sidebarIsOpen}
+          sidebarisopen={sidebarisopen}
           icon={faBuilding}
           redirect={'/create'}
-          text={"Criar"}
+          text={"Criar Relatorio"}
         />
         <SidebarElement
-          sidebarIsOpen={sidebarIsOpen}
+          sidebarisopen={sidebarisopen}
           icon={faUpload}
           redirect={'/update'}
-          text={"Update"}
+          text={"Atualizar Relatorio"}
         />
       </S.SidebarElements>
       <S.SettingsSidebarContainer
-        sidebarIsOpen={sidebarIsOpen}
+        sidebarisopen={sidebarisopen}
         onClick={handleLogout}
       >
         <S.SLogout icon={faDoorOpen} color={"#fff"} />

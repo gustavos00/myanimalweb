@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export const Container = styled.div<{ sidebarIsOpen: boolean }>`
-  width: ${(props) => (props.sidebarIsOpen ? "20vw" : "5vh")};
-  max-width: ${(props) => (props.sidebarIsOpen ? "270px" : "80px")};
-  min-width: ${(props) => (props.sidebarIsOpen ? "255px" : "75px")};
+export const Container = styled.div<{ sidebarisopen: boolean }>`
+  width: ${(props) => (props.sidebarisopen ? "20vw" : "5vh")};
+  max-width: ${(props) => (props.sidebarisopen ? "270px" : "80px")};
+  min-width: ${(props) => (props.sidebarisopen ? "255px" : "75px")};
 
   display: flex;
   flex-direction: column;
@@ -23,7 +23,7 @@ export const SidebarElements = styled.div`
 `;
 
 export const SettingsSidebarContainer = styled.button<{
-  sidebarIsOpen: boolean;
+  sidebarisopen: boolean;
 }>`
   height: 100px;
 
@@ -48,7 +48,7 @@ export const SettingsSidebarContainer = styled.button<{
     color: #fff;
     font-size: 18px;
 
-    display: ${(props) => (props.sidebarIsOpen ? "block" : "none")};
+    display: ${(props) => (props.sidebarisopen ? "block" : "none")};
   }
 `;
 

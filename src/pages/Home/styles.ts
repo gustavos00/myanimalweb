@@ -21,7 +21,7 @@ export const Content = styled.div`
 `;
 
 export const STd = styled(Td)`
-  padding: 5px;
+  padding: 10px;
 
   font-size: 14px;
   font-weight: normal;

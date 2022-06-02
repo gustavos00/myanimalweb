@@ -1,15 +1,15 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export const Container = styled.div<{ sidebarIsOpen: boolean }>`
+export const Container = styled.div<{ sidebarisopen: boolean }>`
   height: 60px;
   padding: ${(props) =>
-    props.sidebarIsOpen ? "0.2rem 0 0.2rem 1.2rem" : "0.2rem 0 0.2rem 0rem"};
+    props.sidebarisopen ? "0.2rem 0 0.2rem 1.2rem" : "0.2rem 0 0.2rem 0rem"};
   margin-bottom: 0.5rem;
 
   display: flex;
   align-items: center;
-  justify-content: ${(props) => !props.sidebarIsOpen && "center"};
+  justify-content: ${(props) => !props.sidebarisopen && "center"};
 
   cursor: pointer;
   opacity: 0.6;
@@ -27,7 +27,7 @@ export const Container = styled.div<{ sidebarIsOpen: boolean }>`
     color: #fff;
     font-size: 18px;
 
-    display: ${(props) => (props.sidebarIsOpen ? "block" : "none")};
+    display: ${(props) => (props.sidebarisopen ? "block" : "none")};
   }
 `;
 
@@ -38,11 +38,11 @@ export const Icon = styled(FontAwesomeIcon)`
   margin-right: 10px;
 `;
 
-export const RightArrow = styled(FontAwesomeIcon)<{ sidebarIsOpen: boolean }>`
+export const RightArrow = styled(FontAwesomeIcon)<{ sidebarisopen: boolean }>`
   width: 30px;
   height: 15px;
 
-  display: ${(props) => (props.sidebarIsOpen ? "block" : "none")};
+  display: ${(props) => (props.sidebarisopen ? "block" : "none")};
 
   position: absolute;
   right: 1rem;

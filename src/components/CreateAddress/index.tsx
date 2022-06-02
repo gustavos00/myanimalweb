@@ -6,6 +6,7 @@ import * as S from "./styles";
 import api from "../../api/api";
 import UserContext from "../../contexts/user";
 import StatesContext from "../../contexts/states";
+import StyledButton from "../StyledButton";
 
 interface CreateAddressProps {
   setHaveAddress: (e: boolean) => void
@@ -70,7 +71,7 @@ function CreateAddress({setHaveAddress} : CreateAddressProps) {
         onChange={(e) => setLocality(e.target.value)}
       />
 
-      <button onClick={handleCreateAddress}>Submit</button>
+      <StyledButton text={'Submit'} handleClick={handleCreateAddress}/>
     </S.Container>
   );
 }

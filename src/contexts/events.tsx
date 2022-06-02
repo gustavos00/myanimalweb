@@ -1,5 +1,5 @@
-import { createContext, useState } from "react";
-import { EventsData, EventsStatus, EventsTypes } from "../types/EventsData";
+import { createContext, useState } from 'react';
+import { EventsData, EventsStatus, EventsTypes } from '../types/EventsData';
 
 interface EventsContextContent {
   events: Array<EventsData>;
@@ -13,11 +13,9 @@ interface EventsContextContent {
 const EventsContext = createContext<EventsContextContent>({} as EventsContextContent);
 
 export function EventsProvider({ children }: any) {
-
   const [events, setEvents] = useState<Array<EventsData>>([]);
   const [eventsTypes, setEventsTypes] = useState<Array<EventsTypes>>([]);
   const [eventsStatus, setEventsStatus] = useState<Array<EventsStatus>>([]);
-
 
   return (
     <EventsContext.Provider

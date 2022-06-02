@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export const UserData = styled.div<{ sidebarIsOpen: boolean }>`
+export const UserData = styled.div<{ sidebarisopen: boolean }>`
   height: 100px;
   padding: 0.2rem 0 0.2rem 1.2rem;
   margin-bottom: 0.5rem;
@@ -20,13 +20,13 @@ export const UserData = styled.div<{ sidebarIsOpen: boolean }>`
   }
 
   h1 {
-    display: ${(props) => (props.sidebarIsOpen ? "block" : "none")};
+    display: ${(props) => (props.sidebarisopen ? "block" : "none")};
     font-weight: normal;
     color: #fff;
   }
 `;
 
-export const CloseSidebarIcon = styled(FontAwesomeIcon)<{ sidebarIsOpen: boolean }>`
+export const CloseSidebarIcon = styled(FontAwesomeIcon)<{ sidebarisopen: boolean }>`
   width: 30px;
   height: 15px;
 
@@ -35,7 +35,7 @@ export const CloseSidebarIcon = styled(FontAwesomeIcon)<{ sidebarIsOpen: boolean
 
   cursor: pointer;
 
-  display: ${(props) => (props.sidebarIsOpen ? "block" : "none")};
+  display: ${(props) => (props.sidebarisopen ? "block" : "none")};
 `;
 
 export const Test = styled.div`

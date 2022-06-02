@@ -15,7 +15,6 @@ function Table({ children, header, title}: TableProps) {
   return (
     <S.DataContent>
       <h1>{title}</h1>
-      <FilterInput inputPlaceholder={"Search..."} />
       <S.TableContent>
         <S.STable>
           <S.STHead>

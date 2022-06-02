@@ -1,20 +1,22 @@
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router";
-import { EventsData, EventsStatus, EventsTypes } from "../../types/EventsData";
-import { generateUrlSearchParams } from "../../utils/URLSearchParams";
-import { AnimalData } from "../../types/AnimalData";
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { EventsData, EventsStatus, EventsTypes } from '../../types/EventsData';
+import { generateUrlSearchParams } from '../../utils/URLSearchParams';
+import { AnimalData } from '../../types/AnimalData';
+import { generateFormData } from '../../utils/FormData';
 
-import Loading from "../../components/Loading";
-import Sidebar from "../../components/Sidebar";
-import StatesContext from "../../contexts/states";
-import api from "../../api/api";
-import UserContext from "../../contexts/user";
-import StyledSelect from "../../components/StyledSelect";
-import StyledButton from "../../components/StyledButton";
-import UploadFiles from "../../components/UploadFiles";
-import EventsContext from "../../contexts/events";
+import Loading from '../../components/Loading';
+import Sidebar from '../../components/Sidebar';
+import StatesContext from '../../contexts/states';
+import api from '../../api/api';
+import UserContext from '../../contexts/user';
+import StyledSelect from '../../components/StyledSelect';
+import StyledButton from '../../components/StyledButton';
+import UploadFiles from '../../components/UploadFiles';
+import EventsContext from '../../contexts/events';
 
-import * as S from "./styles";
+import * as S from './styles';
+import FilesContext from '../../contexts/files';
 
 function CreateReport() {
   const navigate = useNavigate();
@@ -22,8 +24,8 @@ function CreateReport() {
   const { isLoading, setIsLoading } = useContext(StatesContext);
 
   const { animals } = useContext(UserContext);
-  const { events, setEvents, eventsStatus, eventsTypes } =
-    useContext(EventsContext);
+  const { uploadedFiles } = useContext(FilesContext);
+  const { events, setEvents, eventsStatus, eventsTypes } = useContext(EventsContext);
 
   const [report, setReport] = useState<string>();
   const [eventType, setEventType] = useState<EventsTypes>(eventsTypes[0]);
@@ -32,29 +34,35 @@ function CreateReport() {
 
   const handleCreate = async () => {
     try {
-      setIsLoading(true)
-      const data = generateUrlSearchParams({
-        report: report ?? '',
+      setIsLoading(true);
+
+      const data = generateFormData({
+        report: report,
         eventsStatusId: eventStatus?.idEventsStatus,
         eventsTypesId: eventType?.idEventsTypes,
         animalId: animal?.idAnimal,
       });
-      const response = await api.post("/veterinarian/createEvent", data)
-      
+
+      uploadedFiles.forEach((element) => {
+        data.append('files', element as any);
+      });
+
+      const response = await api.post('/veterinarian/createEvent', data);
+
       const tempEvents = events;
       tempEvents.push({
         ...response.data,
         eventsStatus: eventStatus,
-        eventsType: eventsTypes,
-        animal
+        eventsType: eventType,
+        animal,
       } as unknown as EventsData);
-      
+
       setEvents(tempEvents);
-      setIsLoading(false)
-      navigate("/");
+      setIsLoading(false);
+      navigate('/');
     } catch (e) {
-      setIsLoading(false)
-      alert("Error 6");
+      setIsLoading(false);
+      alert('Error 6');
     }
   };
 
@@ -71,37 +79,21 @@ function CreateReport() {
                 id="reportText"
                 cols={30}
                 rows={10}
-                onChange={(e) => setReport(e.target.value)}
+                onChange={(e) => {
+                  setReport(e.target.value);
+                }}
               />
             </div>
             {/* Missing date */}
             <S.InputsContainer>
-              <StyledSelect
-                handleOnChange={setEventType}
-                label={"Events Types"}
-                labelHtmlFor={"eventsTypes"}
-                array={eventsTypes ?? []}
-                propertyName={"value"}
-              />
-              <StyledSelect
-                handleOnChange={setEventStatus}
-                label={"Events Status"}
-                labelHtmlFor={"eventsStatus"}
-                array={eventsStatus ?? []}
-                propertyName={"value"}
-              />
-              <StyledSelect
-                handleOnChange={setAnimal}
-                label={"Selected Animal"}
-                labelHtmlFor={"selectedAnimal"}
-                array={animals ?? []}
-                propertyName={"name"}
-              />
+              <StyledSelect handleOnChange={setEventType} label={'Events Types'} labelHtmlFor={'eventsTypes'} array={eventsTypes ?? []} propertyName={'value'} />
+              <StyledSelect handleOnChange={setEventStatus} label={'Events Status'} labelHtmlFor={'eventsStatus'} array={eventsStatus ?? []} propertyName={'value'} />
+              <StyledSelect handleOnChange={setAnimal} label={'Selected Animal'} labelHtmlFor={'selectedAnimal'} array={animals ?? []} propertyName={'name'} />
               <UploadFiles />
             </S.InputsContainer>
 
             <S.ButtonContainer>
-              <StyledButton handleClick={handleCreate} text={"Submit"} />
+              <StyledButton handleClick={handleCreate} text={'Submit'} />
             </S.ButtonContainer>
           </S.DataContent>
         </S.Content>

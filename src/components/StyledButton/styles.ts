@@ -9,22 +9,14 @@ export const Container = styled.div`
 
   button {
     width: 50%;
+    min-width: 100px;
     height: 40px;
 
     background: none;
     border-radius: 5px;
-    border: 2px solid #f09c79;
-
-    color: #f09c79;
-
-    cursor: pointer;
+    color: #fff;
+    border: none;
+    background: #f09c79;
     transition: all 0.3s ease-in-out;
-
-    &:hover {
-      color: #fff;
-
-      border: none;
-      background: #f09c79;
-    }
   }
 `;

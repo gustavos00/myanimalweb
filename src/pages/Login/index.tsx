@@ -27,8 +27,7 @@ const Login = () => {
     setIsLoading(true);
 
     const salt = uuid.v4();
-
-    const response = await fetch(googleResponse.imageurl);
+    const response = await fetch(googleResponse.imageurl)
     const imageBlob = await response.blob();
 
     try {

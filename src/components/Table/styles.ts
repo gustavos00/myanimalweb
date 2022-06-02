@@ -29,7 +29,7 @@ export const DataContent = styled.div`
 
 export const TableContent = styled.div`
   width: 90%;
-  height: 90%;
+  max-height: 90%;
   margin-top: 1rem;
 
   border-radius: 5px;

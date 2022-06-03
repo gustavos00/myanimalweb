@@ -20,6 +20,10 @@ export const Content = styled.div`
   align-items: center;
 `;
 
+export const ActionsContainer = styled.div`
+  display: flex;
+`;
+
 export const STd = styled(Td)`
   padding: 10px;
 

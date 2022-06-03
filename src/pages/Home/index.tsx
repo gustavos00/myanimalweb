@@ -22,10 +22,12 @@ function Home() {
   const navigate = useNavigate();
 
   const { isLoading, setIsLoading } = useContext(StatesContext);
-  const { user, unacceptedOwners, setUnacceptedOwners, animals } = useContext(UserContext);
-  const { events } = useContext(EventsContext);
+  const { user, unacceptedOwners, setUnacceptedOwners, animals, setAnimals } = useContext(UserContext);
+  const { events, setEvents } = useContext(EventsContext);
 
-  const [haveAddress, setHaveAddress] = useState<boolean>(user?.haveAddress ? user.haveAddress : false);
+  const [haveAddress, setHaveAddress] = useState<boolean>(
+    user?.haveAddress ? user.haveAddress : false
+  );
 
   const handleAcceptRequest = async (idAnimal: string | number) => {
     try {
@@ -34,8 +36,14 @@ function Home() {
       await api.post('/veterinarian/updateVeterinarianStatus', data);
 
       const tempArray = unacceptedOwners;
-      const alreadyAcceptedElementIndex = tempArray.findIndex((element) => element.idAnimal === idAnimal);
-      tempArray.splice(alreadyAcceptedElementIndex, 1);
+      const acceptedAnimalIndex = tempArray.findIndex((element) => element.idAnimal === idAnimal);
+      
+      const acceptedAnimalData = tempArray[acceptedAnimalIndex]
+      const tempAnimalArrays = animals
+      tempAnimalArrays.push(acceptedAnimalData)
+      setAnimals(tempAnimalArrays)
+
+      tempArray.splice(acceptedAnimalIndex, 1);
       setUnacceptedOwners([...tempArray]);
 
       setIsLoading(false);
@@ -45,9 +53,63 @@ function Home() {
     }
   };
 
-  const registeredAnimalsTableHeaders = ['Name', 'Age', 'Breed', 'Track Number', 'Birthday', 'Birthday Month', 'Owner Name', 'Owner Contact'];
-  const regiteredEventsHeaders = ['Report', 'Status', 'Type', 'Animal Name', 'Date'];
-  const unacceptedOwnersHeaders = ['Name', 'Email', 'Contact', 'Animal Name', 'Animal Age', 'Animal Breed', 'Actions'];
+  const handleDeleteEvent = async (idEvent: string | number) => {
+    try {
+      setIsLoading(true);
+      const data = generateUrlSearchParams({ id: idEvent });
+      await api.post('/veterinarian/deleteEvent', data);
+
+      const tempArray = events;
+      const deletedEventIndex = tempArray.findIndex((element) => element.idEvents === idEvent);
+      tempArray.splice(deletedEventIndex, 1);
+      setEvents([...tempArray]);
+
+      setIsLoading(false);
+    } catch (e) {
+      setIsLoading(false);
+      console.log(e);
+    }
+  };
+
+  const handleRemoveRegisteredAnimal = async (id: string | number) => {
+    try {
+      setIsLoading(true);
+      const data = generateUrlSearchParams({ animalId: id });
+      await api.post('/veterinarian/remove', data);
+
+      const tempArray = animals;
+      const deletedEventIndex = tempArray.findIndex((element) => element.idAnimal === id);
+      tempArray.splice(deletedEventIndex, 1);
+      setAnimals([...tempArray]);
+
+      setIsLoading(false);
+    } catch (e) {
+      setIsLoading(false);
+      console.log(e);
+    }
+  };
+
+  const registeredAnimalsTableHeaders = [
+    'Name',
+    'Age',
+    'Breed',
+    'Track Number',
+    'Birthday',
+    'Birthday Month',
+    'Owner Name',
+    'Owner Contact',
+    'Actions',
+  ];
+  const regiteredEventsHeaders = ['Report', 'Status', 'Type', 'Animal Name', 'Date', 'Actions'];
+  const unacceptedOwnersHeaders = [
+    'Name',
+    'Email',
+    'Contact',
+    'Animal Name',
+    'Animal Age',
+    'Animal Breed',
+    'Actions',
+  ];
 
   return (
     <>
@@ -68,6 +130,12 @@ function Home() {
                     {element.user.givenName} {element.user.familyName}
                   </S.STd>
                   <S.STd>{element.user.email}</S.STd>
+                  <S.STd>
+                    <StyledButton
+                      text={'Remove'}
+                      handleClick={() => handleRemoveRegisteredAnimal(element.idAnimal)}
+                    />
+                  </S.STd>
                 </S.STr>
               ))}
             </>
@@ -76,12 +144,24 @@ function Home() {
           <Table title={'Registered Events'} header={regiteredEventsHeaders}>
             <>
               {events?.map((element, index) => (
-                <S.STr onClick={() => navigate('/update', { state: element })} iscolored={index % 2 === 0} key={index}>
+                <S.STr iscolored={index % 2 === 0} key={index}>
                   <S.STd>{element.report ?? ''}</S.STd>
                   <S.STd>{element.eventsStatus.value}</S.STd>
                   <S.STd>{element.eventsType.value}</S.STd>
                   <S.STd>{element.animal.name}</S.STd>
-                  <S.STd>{formatDate(element.createdAt)}</S.STd>
+                  <S.STd>{formatDate(element.date)}</S.STd>
+                  <S.STd>
+                    <S.ActionsContainer>
+                      <StyledButton
+                        text={'Update'}
+                        handleClick={() => navigate('/update', { state: element })}
+                      />
+                      <StyledButton
+                        text={'Delete'}
+                        handleClick={() => handleDeleteEvent(element.idEvents)}
+                      />
+                    </S.ActionsContainer>
+                  </S.STd>
                 </S.STr>
               ))}
             </>
@@ -100,7 +180,10 @@ function Home() {
                   <S.STd>{element.age}</S.STd>
                   <S.STd>{element.breed}</S.STd>
                   <S.STd>
-                    <StyledButton text={'Accept'} handleClick={() => handleAcceptRequest(element.idAnimal)} />
+                    <StyledButton
+                      text={'Accept'}
+                      handleClick={() => handleAcceptRequest(element.idAnimal)}
+                    />
                   </S.STd>
                 </S.STr>
               ))}

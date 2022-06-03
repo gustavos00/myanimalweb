@@ -3,6 +3,7 @@ import { AnimalData } from "./AnimalData";
 export interface EventsData {
   idEvents: number;
   report: string;
+  date: string
   createdAt: string;
   updatedAt: string;
   animalIdAnimal: number;

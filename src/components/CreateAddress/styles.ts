@@ -1,8 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div`
   width: 300px;
-  height: 300px;
+  height: 500px;
+  background: blue;
   padding: 20px;
 
   display: flex;
@@ -11,5 +12,5 @@ export const Container = styled.div`
 
   border-radius: 10px;
 
-  background-color: rgba(255, 255, 255);
+  background: #adadad;
 `;

@@ -8,6 +8,7 @@ export const DataContent = styled.div`
 
   margin: 2rem;
   padding: 0.5rem;
+  padding-bottom: 2rem;
   border-radius: 15px;
   box-shadow: 0px 0px 50px -25px #000000;
 

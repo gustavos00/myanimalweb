@@ -37,12 +37,6 @@ function Sidebar() {
           redirect={'/create'}
           text={"Criar Relatorio"}
         />
-        <SidebarElement
-          sidebarisopen={sidebarisopen}
-          icon={faUpload}
-          redirect={'/update'}
-          text={"Atualizar Relatorio"}
-        />
       </S.SidebarElements>
       <S.SettingsSidebarContainer
         sidebarisopen={sidebarisopen}

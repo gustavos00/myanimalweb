@@ -77,7 +77,7 @@ export const ButtonContainer = styled.div`
 
 export const InputsContainer = styled.div`
   display: grid;
-  grid-template-rows: repeat(3, 55px);
+  grid-template-rows: repeat(4, 55px);
   grid-gap: 10px;
 `;
 

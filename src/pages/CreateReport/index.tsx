@@ -17,6 +17,7 @@ import EventsContext from '../../contexts/events';
 
 import * as S from './styles';
 import FilesContext from '../../contexts/files';
+import StyledInput from '../../components/StyledInput';
 
 function CreateReport() {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ function CreateReport() {
   const { events, setEvents, eventsStatus, eventsTypes } = useContext(EventsContext);
 
   const [report, setReport] = useState<string>();
+  const [date, setDate] = useState<string>();
   const [eventType, setEventType] = useState<EventsTypes>(eventsTypes[0]);
   const [eventStatus, setEventStatus] = useState<EventsStatus>(eventsStatus[0]);
   const [animal, setAnimal] = useState<AnimalData>(animals[0]);
@@ -35,9 +37,9 @@ function CreateReport() {
   const handleCreate = async () => {
     try {
       setIsLoading(true);
-
       const data = generateFormData({
         report: report,
+        date,
         eventsStatusId: eventStatus?.idEventsStatus,
         eventsTypesId: eventType?.idEventsTypes,
         animalId: animal?.idAnimal,
@@ -86,9 +88,33 @@ function CreateReport() {
             </div>
             {/* Missing date */}
             <S.InputsContainer>
-              <StyledSelect handleOnChange={setEventType} label={'Events Types'} labelHtmlFor={'eventsTypes'} array={eventsTypes ?? []} propertyName={'value'} />
-              <StyledSelect handleOnChange={setEventStatus} label={'Events Status'} labelHtmlFor={'eventsStatus'} array={eventsStatus ?? []} propertyName={'value'} />
-              <StyledSelect handleOnChange={setAnimal} label={'Selected Animal'} labelHtmlFor={'selectedAnimal'} array={animals ?? []} propertyName={'name'} />
+              <StyledSelect
+                handleOnChange={setEventType}
+                label={'Events Types'}
+                labelHtmlFor={'eventsTypes'}
+                array={eventsTypes ?? []}
+                propertyName={'value'}
+              />
+              <StyledSelect
+                handleOnChange={setEventStatus}
+                label={'Events Status'}
+                labelHtmlFor={'eventsStatus'}
+                array={eventsStatus ?? []}
+                propertyName={'value'}
+              />
+              <StyledSelect
+                handleOnChange={setAnimal}
+                label={'Selected Animal'}
+                labelHtmlFor={'selectedAnimal'}
+                array={animals ?? []}
+                propertyName={'name'}
+              />
+              <StyledInput
+                handleOnChange={(e) => setDate(e.target.value)}
+                type={'datetime-local'}
+                label={'Select a date'}
+                labelHtmlFor={'Select a date'}
+              />
               <UploadFiles />
             </S.InputsContainer>
 

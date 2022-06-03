@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.ul`
   margin-top: 10px;
-  max-height: 200px;
+  max-height: 135px;
   overflow-y: auto;
 
   li {
